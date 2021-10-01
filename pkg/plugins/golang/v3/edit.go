@@ -24,7 +24,6 @@ import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds"
 )
 
 var _ plugin.EditSubcommand = &editSubcommand{}
@@ -59,7 +58,5 @@ func (p *editSubcommand) InjectConfig(c config.Config) error {
 }
 
 func (p *editSubcommand) Scaffold(fs machinery.Filesystem) error {
-	scaffolder := scaffolds.NewEditScaffolder(p.config, p.multigroup)
-	scaffolder.InjectFS(fs)
-	return scaffolder.Scaffold()
+	return nil
 }

@@ -18,17 +18,16 @@ package scaffolds
 
 import (
 	"fmt"
-
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds/internal/templates/cmd"
 	"github.com/spf13/afero"
 
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds/internal/templates/api"
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds/internal/templates/controllers"
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds/internal/templates/hack"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds/internal/templates"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds/internal/templates/api"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds/internal/templates/controllers"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds/internal/templates/hack"
 )
 
 var _ plugins.Scaffolder = &apiScaffolder{}
@@ -104,7 +103,7 @@ func (s *apiScaffolder) Scaffold() error {
 	}
 
 	if err := scaffold.Execute(
-		&templates.MainUpdater{WireResource: doAPI, WireController: doController},
+		cmd.NewRunUpdater(s.config.GetProjectName(), doAPI, doController),
 	); err != nil {
 		return fmt.Errorf("error updating main.go: %v", err)
 	}

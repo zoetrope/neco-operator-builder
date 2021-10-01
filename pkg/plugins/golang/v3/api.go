@@ -21,16 +21,17 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/pflag"
 
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
 	goPlugin "sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds"
 )
 
 const (
@@ -39,7 +40,7 @@ const (
 )
 
 // DefaultMainPath is default file path of main.go
-const DefaultMainPath = "main.go"
+//const DefaultMainPath = "main.go"
 
 var _ plugin.CreateAPISubcommand = &createAPISubcommand{}
 
@@ -164,9 +165,10 @@ func (p *createAPISubcommand) InjectResource(res *resource.Resource) error {
 }
 
 func (p *createAPISubcommand) PreScaffold(machinery.Filesystem) error {
-	// check if main.go is present in the root directory
-	if _, err := os.Stat(DefaultMainPath); os.IsNotExist(err) {
-		return fmt.Errorf("%s file should present in the root directory", DefaultMainPath)
+	path := filepath.Join("cmd", p.config.GetProjectName()+"-controller", "sub", "run.go")
+	// check if run.go is present
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return fmt.Errorf("%s file should present", path)
 	}
 
 	return nil

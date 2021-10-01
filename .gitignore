@@ -6,6 +6,7 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
+/vendor
 
 # Editors
 *~
@@ -17,4 +18,8 @@
 
 # Generated files
 /bin
+/build
 /docs/book
+
+/tmp
+/org

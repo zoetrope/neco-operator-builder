@@ -24,12 +24,12 @@ import (
 
 	"github.com/spf13/pflag"
 
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds"
 )
 
 var _ plugin.InitSubcommand = &initSubcommand{}
@@ -60,6 +60,8 @@ func (p *initSubcommand) UpdateMetadata(cliMeta plugin.CLIMetadata, subcmdMeta *
   - a "Makefile" with several useful make targets for the project
   - several YAML files for project deployment under the "config" directory
   - a "main.go" file that creates the manager that will run the project controllers
+  - a "root.go" file that creates the manager that will run the project controllers
+  - a "run.go" file that creates the manager that will run the project controllers
 `
 	subcmdMeta.Examples = fmt.Sprintf(`  # Initialize a new project with your domain and name in copyright
   %[1]s init --plugins go/v3 --domain example.org --owner "Your name"

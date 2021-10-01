@@ -19,22 +19,26 @@ package scaffolds
 import (
 	"fmt"
 
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds/internal/templates/cmd"
+
 	"github.com/spf13/afero"
 
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds/internal/templates"
+	"github.com/cybozu-go/neco-operator-builder/pkg/plugins/golang/v3/scaffolds/internal/templates/hack"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds/internal/templates"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins/golang/v3/scaffolds/internal/templates/hack"
 )
 
 const (
 	// ControllerRuntimeVersion is the kubernetes-sigs/controller-runtime version to be used in the project
-	ControllerRuntimeVersion = "v0.8.3"
+	ControllerRuntimeVersion = "v0.10.0"
 	// ControllerToolsVersion is the kubernetes-sigs/controller-tools version to be used in the project
-	ControllerToolsVersion = "v0.4.1"
+	ControllerToolsVersion = "v0.6.1"
 	// KustomizeVersion is the kubernetes-sigs/kustomize version to be used in the project
-	KustomizeVersion = "v3.8.7"
+	KustomizeVersion = "v4.1.3"
+	// HelmVersion is the helm version to be used in the project
+	HelmVersion = "v3.6.3"
 
 	imageName = "controller:latest"
 )
@@ -98,7 +102,9 @@ func (s *initScaffolder) Scaffold() error {
 	)
 
 	return scaffold.Execute(
-		&templates.Main{},
+		&cmd.Main{},
+		&cmd.Root{},
+		&cmd.Run{},
 		&templates.GoMod{ControllerRuntimeVersion: ControllerRuntimeVersion},
 		&templates.GitIgnore{},
 		&templates.Makefile{
@@ -106,6 +112,7 @@ func (s *initScaffolder) Scaffold() error {
 			BoilerplatePath:          s.boilerplatePath,
 			ControllerToolsVersion:   ControllerToolsVersion,
 			KustomizeVersion:         KustomizeVersion,
+			HelmVersion:              HelmVersion,
 			ControllerRuntimeVersion: ControllerRuntimeVersion,
 		},
 		&templates.Dockerfile{},
